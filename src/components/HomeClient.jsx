@@ -13,7 +13,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Badge } from "@/components/ui/badge";
-import popupData from "@/data/popupdata.json";
 
 const getEmbedUrl = (url) => {
   if (!url) return "";
@@ -35,15 +34,15 @@ export default function HomeClient({ initialData, initialPopupData }) {
 
   const finalData = initialData || {};
   
-  const apiPopup = initialPopupData?.popup?.[0] || {};
-  const activePopup = (initialPopupData?.popup && initialPopupData.popup.length > 0)
+  const apiPopup = initialPopupData?.popup?.[0] || null;
+  const activePopup = apiPopup
     ? {
         showPopup: true,
-        title: apiPopup.title || popupData.title,
-        subtitle: apiPopup.subtitle || popupData.subtitle,
-        videoUrl: apiPopup.video_url ? getEmbedUrl(apiPopup.video_url) : popupData.videoUrl
+        title: apiPopup.title,
+        subtitle: apiPopup.subtitle,
+        videoUrl: apiPopup.video_url ? getEmbedUrl(apiPopup.video_url) : ""
       }
-    : popupData;
+    : null;
 
   const studioMap = {};
   if (finalData.studios) {
@@ -105,13 +104,13 @@ export default function HomeClient({ initialData, initialPopupData }) {
 
   useEffect(() => {
     const hasShownPopup = sessionStorage.getItem("hasShownStartupPopup");
-    if (activePopup.showPopup && !hasShownPopup) {
+    if (activePopup?.showPopup && !hasShownPopup) {
       const timer = setTimeout(() => {
         setIsStartupPopupOpen(true);
       }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [activePopup.showPopup]);
+  }, [activePopup?.showPopup]);
 
   const handleCloseStartupPopup = () => {
     setIsStartupPopupOpen(false);
@@ -386,13 +385,15 @@ export default function HomeClient({ initialData, initialPopupData }) {
       </div>
 
       {/* Startup Popup Modal */}
-      <TrailerModal
-        isOpen={isStartupPopupOpen}
-        onClose={handleCloseStartupPopup}
-        trailerUrl={activePopup.videoUrl}
-        movieTitle={activePopup.title}
-        subtitle={activePopup.subtitle}
-      />
+      {activePopup && (
+        <TrailerModal
+          isOpen={isStartupPopupOpen}
+          onClose={handleCloseStartupPopup}
+          trailerUrl={activePopup.videoUrl}
+          movieTitle={activePopup.title}
+          subtitle={activePopup.subtitle}
+        />
+      )}
 
       {/* Trailer Modal */}
       {selectedMovie && (

@@ -11,7 +11,7 @@ export async function GET(request) {
         });
 
         // Allow Django admin domain
-        res.headers.set("Access-Control-Allow-Origin", "https://plumbous-jan-perforable.ngrok-free.dev");
+        res.headers.set("Access-Control-Allow-Origin", "https://ibe.neomfilms.com.np");
         res.headers.set("Access-Control-Allow-Methods", "GET, OPTIONS");
         res.headers.set("Access-Control-Allow-Headers", "Content-Type");
 
@@ -21,7 +21,7 @@ export async function GET(request) {
             { success: false, message: "Error: Failed to purge cache." },
             { status: 500 }
         );
-        res.headers.set("Access-Control-Allow-Origin", "https://plumbous-jan-perforable.ngrok-free.dev");
+        res.headers.set("Access-Control-Allow-Origin", "https://ibe.neomfilms.com.np");
         return res;
     }
 }
