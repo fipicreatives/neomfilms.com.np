@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { MapPin, Building2, ScreenShare, ShieldCheck, Globe2, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -32,8 +33,11 @@ export default function NetworkClient({ initialData }) {
               Neom Films operates the most sophisticated and reliable cinema distribution network in Nepal, reaching every major hub and city.
             </p>
           </div>
-          <Button size="xl" className="bg-brand-gold text-white hover:bg-brand-gold/90 font-bold rounded-full px-12">
-            PARTNER WITH US
+          <Button
+            asChild
+            className="h-auto bg-brand-gold text-white hover:bg-brand-gold/90 font-bold rounded-full px-12 py-4"
+          >
+            <Link href="/contact?inquiry=Theater%20Partnership">PARTNER WITH US</Link>
           </Button>
         </div>
 

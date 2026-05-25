@@ -1,21 +1,7 @@
 import MerchClient from "@/components/MerchClient";
-
-const fetchMerchData = async () => {
-  if (!process.env.NEXT_PUBLIC_API_URL) return null;
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}/merch/`, {
-      next: { revalidate: 60 * 60 * 24, tags: ["merch", "globals"] }, // 24 hours
-      cache: "force-cache",
-    });
-    if (!res.ok) throw new Error("API failed");
-    return await res.json();
-  } catch (e) {
-    console.error("Failed to fetch merch server-side:", e);
-    return null;
-  }
-};
+import { fetchPaginated } from "@/lib/fetch-paginated";
 
 export default async function Page() {
-  const data = await fetchMerchData();
+  const data = await fetchPaginated("/merch/", { tags: ["merch", "globals"] });
   return <MerchClient initialData={data} />;
 }

@@ -25,6 +25,7 @@ export function Navbar() {
     { name: "Network", href: "/network" },
     { name: "Gallery", href: "/gallery" },
     { name: "Merch", href: "/merch" },
+    { name: "News", href: "/news" },
     { name: "About", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];

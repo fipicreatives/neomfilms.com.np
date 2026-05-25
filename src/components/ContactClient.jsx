@@ -24,29 +24,40 @@ export default function ContactClient({ initialData }) {
   });
 
   useEffect(() => {
-    // Determine target inquiry type based on URL params
     let finalInquiry = "Movie Distribution";
+    const inquiryLower = inquiryParam.toLowerCase();
+
     if (inquiryParam) {
-      if (inquiryParam.toLowerCase().includes("merchandise")) {
+      if (inquiryLower.includes("merchandise")) {
         finalInquiry = "Merchandise";
-      } else if (inquiryParam.toLowerCase().includes("theater")) {
+      } else if (inquiryLower.includes("theater") || inquiryLower.includes("partner")) {
         finalInquiry = "Theater Partnership";
-      } else if (inquiryParam.toLowerCase().includes("marketing")) {
+      } else if (inquiryLower.includes("marketing") || inquiryLower.includes("press")) {
         finalInquiry = "Marketing & Press";
-      } else if (inquiryParam.toLowerCase().includes("careers")) {
+      } else if (inquiryLower.includes("career") || inquiryLower.includes("team")) {
         finalInquiry = "Careers";
+      } else if (inquiryLower.includes("distribution") || inquiryLower.includes("movie")) {
+        finalInquiry = "Movie Distribution";
       } else {
         finalInquiry = "Other";
       }
     }
 
-    // Set form data with item-specific details if present
-    setFormData(prev => ({
+    let defaultMessage = "";
+    if (itemParam) {
+      defaultMessage = `Hi, I am interested in inquiring about the "${itemParam}"${priceParam ? ` (${priceParam})` : ""}. Please let me know how I can purchase or order this merchandise item.`;
+    } else if (finalInquiry === "Careers") {
+      defaultMessage =
+        "Hi, I am interested in career opportunities at Neom Films. Please let me know about any open positions.";
+    } else if (finalInquiry === "Theater Partnership") {
+      defaultMessage =
+        "Hi, I am interested in partnering with Neom Films as a cinema or distribution partner. Please share the next steps.";
+    }
+
+    setFormData((prev) => ({
       ...prev,
       inquiry: finalInquiry,
-      message: itemParam
-        ? `Hi, I am interested in inquiring about the "${itemParam}"${priceParam ? ` (${priceParam})` : ""}. Please let me know how I can purchase or order this merchandise item.`
-        : prev.message
+      message: defaultMessage || prev.message,
     }));
   }, [inquiryParam, itemParam, priceParam]);
 
@@ -179,7 +190,7 @@ export default function ContactClient({ initialData }) {
                 <label className="text-[10px] font-black uppercase text-gray-500 tracking-[0.2em] ml-1">Full Name</label>
                 <Input
                   required
-                  placeholder="John Doe"
+                  placeholder="Your Name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="bg-white/5 border-white/10 text-white h-16 rounded-2xl px-6 focus:ring-brand-gold focus:border-brand-gold"
@@ -190,7 +201,7 @@ export default function ContactClient({ initialData }) {
                 <Input
                   required
                   type="email"
-                  placeholder="john@neomfilms.com"
+                  placeholder="Your Email Address"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="bg-white/5 border-white/10 text-white h-16 rounded-2xl px-6 focus:ring-brand-gold focus:border-brand-gold"
